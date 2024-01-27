@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  spring:
+    build: ./projservice
+    container_name: spring_service
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    image: flixtogheter-service
+  react:
+    build: ./projreact/flixtogther
+    container_name: reactservice
+    stdin_open: true
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    image: flixtogether-frontend

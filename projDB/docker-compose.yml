@@ -1,0 +1,11 @@
+# Use root/example as user/password credentials
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: 'ies'
+    ports:
+      - "27017:27017"
