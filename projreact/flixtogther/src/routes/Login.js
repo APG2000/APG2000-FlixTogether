@@ -34,7 +34,7 @@ export default function Home() {
 
     <ResponsiveAppBar />
 
-    <Container maxWidth="sm>" style={{backgroundColor:"#222"}}>
+    <Container maxWidth="sm>" style={{backgroundColor:"#001A33"}}>
 
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: '100vh' }} >

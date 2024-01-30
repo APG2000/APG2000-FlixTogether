@@ -64,10 +64,11 @@ autoplay={{ delay: 5000 }}
 
      {
          items.map((item) => (
-             <SwiperSlide key={item.id}>
-                 <Link
-                 to={`/${item.type === "Movie" ? "Movie" : "tv"}/${item.id}`}
-                 className="movie-card"
+             <SwiperSlide key={item.id}
+                onClick={()=>{
+                    window.location.href=`/${item.type === "Movie" ? "Movie" : "tv"}/${item.id}`;
+                }}
+             className="movie-card"
                  style={{
                      background: `url(${config.TMDB_IMAGE_URL+"/w200"+item.image}) no-repeat center / cover`
                  }}>
@@ -75,7 +76,6 @@ autoplay={{ delay: 5000 }}
                          <i className="fa-solid fa-play"></i>
                          <p>{item.title}</p>
                      </div>
-                 </Link>
              </SwiperSlide>
          ))
      }

@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
-// Remova a importação do 'react-router-dom' e 'react-helmet' se não estiver usando
 import { Link } from "react-router-dom";
 
-// Importe diretamente o CSS ou as classes relevantes necessárias
-// import "../caminho-para-o-arquivo/seu-arquivo-css.css";
-
-// Substitua 'Config' por 'config' conforme o padrão de nomenclatura usual em JavaScript
 import config from "../Config";
-// Importe os componentes necessários (se necessário)
-// import Loading from "../views/Loading";
+
 import ResponsiveAppBar from "../components/ResponsiveAppBar";
 import { Container } from "@mui/material";
-// Import Swiper React components
 import Swiper from "../components/Swiper";
 import Footer from "../components/Footer"; 
 
@@ -48,7 +41,8 @@ function Home() {
       const formattedMovies = data.results.map((movie) => ({
         id: movie.id,
         title: movie.title,
-        image: config.ImageBAser_url + movie.backdrop_path,
+        image:config.ImageBAser_url + (!movie.backdrop_path ?movie.poster_path :movie.backdrop_path),
+
         type: "Movie",
       }));
 

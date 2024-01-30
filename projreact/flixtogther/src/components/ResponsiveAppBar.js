@@ -1,4 +1,5 @@
-import * as React from 'react';
+
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,17 +13,22 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
+import { Link } from 'react-router-dom';
+import { Alert } from '@mui/material';
 
-const pages = ['Home', 'Pricing', 'Blog'];
+const pages = ['Home', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+const ResponsiveAppBar = () => {
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -35,15 +41,46 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const handleNavbarItemClick = (item) => {
+    console.log(`Clicked on ${item}`);
+    window.location="/"+item
+    handleCloseNavMenu();
+  };
+
+  const handleUserItemClick = (item) => {
+    console.log(`Clicked on ${item}`);
+    handleCloseUserMenu();
+  };
+  const handleSearchSubmit = (event) => {
+
+    if(searchTerm.length>3){
+    console.log(`Pesquisando por: ${searchTerm}`);
+
+    window.location.href="/search/"+searchTerm;
+
+
+
+    }else{
+      alert("Searchterm length must be > 3")
+    }
+
+  
+    event.preventDefault();
+  };
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+
   return (
-    <AppBar position="static"   style={{backgroundColor:"#222"}}   >
+    <AppBar position="static" style={{ backgroundColor: '#454a52' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -57,7 +94,7 @@ function ResponsiveAppBar() {
             FlixTogheter
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } } }>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -71,15 +108,7 @@ function ResponsiveAppBar() {
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
               keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
@@ -87,18 +116,23 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handleNavbarItemClick(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
+     
+
+         
+
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            component={Link}
+            to="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -112,11 +146,14 @@ function ResponsiveAppBar() {
           >
             LOGO
           </Typography>
+
+
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleNavbarItemClick(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -124,7 +161,26 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }} >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <form onSubmit={handleSearchSubmit}>
+              <TextField
+                id="search"
+                label="Pesquisar"
+                variant="outlined"
+                size="small"
+                value={searchTerm}  
+                onChange={handleSearchChange}              
+                sx={{ backgroundColor: 'white', borderRadius: 2, flexGrow: 1, mr: 10,width:"60vh"}}
+              />
+              
+            </form>
+          </Box>
+
+
+
+
+
+          <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -134,20 +190,12 @@ function ResponsiveAppBar() {
               sx={{ mt: '45px' }}
               id="menu-appbar"
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
               keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => handleUserItemClick(setting)}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
@@ -157,5 +205,6 @@ function ResponsiveAppBar() {
       </Container>
     </AppBar>
   );
-}
+};
+
 export default ResponsiveAppBar;
